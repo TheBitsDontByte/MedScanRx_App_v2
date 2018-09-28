@@ -1,5 +1,5 @@
 {
-  "name": "RNFirebaseStarter",
+  "name": "MedScanRxApp",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
@@ -21,9 +21,17 @@
     "preset": "react-native"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "fbjs": "^0.8.17",
+    "firebase": "^4.12.1",
+    "jwt-decode": "^2.2.0",
+    "moment": "^2.22.0",
     "react": "^16.3.2",
     "react-native": "^0.55.3",
-    "react-native-firebase": "^4.3.6"
+    "react-native-firebase": "^4.3.6",
+    "react-native-router-flux": "^4.0.0-beta.28",
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
   }
 }

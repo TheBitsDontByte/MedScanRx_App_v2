@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "432048660269",
+    "firebase_url": "https://medscanrxapp.firebaseio.com",
+    "project_id": "medscanrxapp",
+    "storage_bucket": "medscanrxapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:432048660269:android:bc127021e5434d13",
+        "android_client_info": {
+          "package_name": "com.medscanrx.medscanrxapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "432048660269-rpnpdh4osfdvvmr7uoqdrn43c0gnis4b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5yT-xTE0K9dzGLpHL2LQyLZbyi64sjuk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
