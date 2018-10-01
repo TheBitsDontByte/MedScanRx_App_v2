@@ -11,7 +11,7 @@ class AlertListDetail extends Component {
   }
 
   hasUpcomingAlert(alert) {
-    return moment().isAfter(moment.utc(alert).add(-20, "m")) && moment().isBefore(moment.utc(alert).add(40, "m")) 
+    return moment().isAfter(moment.utc(alert).add(-20, "m")) && moment().isBefore(moment.utc(alert).add(35, "m")) 
   }
 
   render() {
@@ -42,7 +42,7 @@ class AlertListDetail extends Component {
             >
               <View style={timerViewStyle}>
                 <Text style={timerTextStyle}>
-                  Take in about{" "}
+                  Take{" "} 
                   {moment
                     .utc(nextAlert)
                     .local()

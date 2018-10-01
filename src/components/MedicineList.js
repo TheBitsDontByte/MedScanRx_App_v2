@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import moment from "moment";
 
 import {
-  getAllMedicines,
   getAllPrescriptionInfo,
   clearMedicineValues
 } from "../actions/medicinesActions";
@@ -22,7 +21,7 @@ class MedicineList extends Component {
     this.showModal = this.showModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
-  componentWillMount() {
+  componentDidMount() {
     this.props.clearMedicineValues();
     this.props.getAllPrescriptionInfo(this.props.patientId);
   }
@@ -38,7 +37,7 @@ class MedicineList extends Component {
   }
 
   hasUpcomingAlert(alert) {
-    return moment().isAfter(moment.utc(alert).add(-20, "m")) && moment().isBefore(moment.utc(alert).add(40, "m")) 
+    return moment().isAfter(moment.utc(alert).add(-20, "m")) && moment().isBefore(moment.utc(alert).add(35, "m")) 
   }
 
   renderRow(medicine) {
@@ -121,5 +120,5 @@ const mapStateToProps = (state, ownProps) => {
 
 export default connect(
   mapStateToProps,
-  { getAllMedicines, getAllPrescriptionInfo, clearMedicineValues }
+  { getAllPrescriptionInfo, clearMedicineValues }
 )(MedicineList);

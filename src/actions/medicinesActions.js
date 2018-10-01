@@ -27,10 +27,4 @@ export const clearMedicineValues = () => {
 }
 
 
-export const getMedicine = (medicineId) => {
-  return {
-    type: GET_MEDICINE,
-    payload: allMedicines[medicineId]
-  }
-}
 

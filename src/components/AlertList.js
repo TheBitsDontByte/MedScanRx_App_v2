@@ -58,7 +58,7 @@ class AlertList extends Component {
   }
 
   hasUpcomingAlert(alert) {
-    return moment().isAfter(moment.utc(alert).add(-20, "m")) && moment().isBefore(moment.utc(alert).add(40, "m")) 
+    return moment().isAfter(moment.utc(alert).add(-20, "m")) && moment().isBefore(moment.utc(alert).add(35, "m")) 
   }
 
   renderTakeNowButton() {
@@ -94,7 +94,6 @@ class AlertList extends Component {
           <TakeMedicineModal
             showModal={this.state.showModal}
             closeModal={this.closeModal}
-            // refreshCallingPage={this.refreshOnTake}
           />
         )}
         <View style={styles.containerStyle}>{this.renderTakeNowButton()}</View>

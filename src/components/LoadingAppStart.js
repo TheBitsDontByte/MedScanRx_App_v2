@@ -10,27 +10,22 @@ import { AsyncSpinner } from "./common";
 
 const getJwt = async reloginUser => {
   try {
-    console.log("before token")
-
     const token = await AsyncStorage.getItem("jwt");
-    console.log("the token", token)
+
     if (token && jwtDecode(token).exp * 1000 > Date.now()) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      console.log("Before logging in");
       reloginUser();
     } else {
-      console.log("");
-
       Actions.auth();
     }
   } catch (error) {
-    console.log("Get jwt error", error);
+    console.log("error in getting item from async storate", error)
+    Actions.auth();
   }
 };
 
 class LoadingAppStart extends React.Component {
   componentWillMount() {
-    console.log("in will mount before anything");
     getJwt(this.props.reloginUser);
   }
 

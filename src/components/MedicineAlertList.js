@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView, Text, Image } from "react-native";
 import { connect } from "react-redux";
 import _ from "lodash";
 
@@ -8,6 +8,7 @@ import { Button } from "./common";
 import MedicineAlertDetail from "./MedicineAlertDetail";
 import TakeMedicineModal from "./TakeMedicineModal";
 import LoadingAsync from "./LoadingAsync";
+import Error from './Error'
 
 class MedicineAlertList extends Component {
   constructor() {
@@ -16,9 +17,6 @@ class MedicineAlertList extends Component {
 
     this.showModal = this.showModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-  }
-  componentWillMount() {
-    this.props.getAllUpcomingAlerts(this.props.patientId);
   }
 
   showModal() {
@@ -29,12 +27,13 @@ class MedicineAlertList extends Component {
 
   closeModal() {
     this.setState({
-      showModal: false 
+      showModal: false
     });
   }
 
-  getUpcomingAlerts() {
+  componentWillMount() {
     this.props.getAllUpcomingAlerts(this.props.patientId);
+
   }
 
   renderMedicines() {
@@ -60,14 +59,20 @@ class MedicineAlertList extends Component {
   }
 
   render() {
-    let { allUpcomingAlerts, patientId } = this.props;
+    let { allUpcomingAlerts, patientId, hasError, errorMessage } = this.props;
+
+    if (hasError) {
+      return <Error errorMessage={errorMessage} />
+    }
 
     if (!patientId || !allUpcomingAlerts)
       return (
-        <View style={styles.spinnerStyle}>
+        <View style={styles.centerStyle}>
           <LoadingAsync />
         </View>
       );
+    
+
     return this.props.allUpcomingAlerts ? (
       <View style={{ flex: 1 }}>
         {this.state.showModal && (
@@ -93,18 +98,32 @@ const styles = {
     flexDirection: "row",
     position: "relative"
   },
-  spinnerStyle: {
+  centerStyle: {
     flex: 1,
+    paddingBottom: 100,
     justifyContent: "center",
     alignItems: "center"
   }
 };
 
 const mapStateToProps = state => {
-  return {
-    allUpcomingAlerts: state.home.allUpcomingAlerts,
-    patientId: state.auth.patientId
-  };
+  console.log("Mstp, state", state);
+  let newState = {};
+
+  if (state.auth.patientId) {
+    newState.patientId = state.auth.patientId;
+  }
+
+  if (state.home.allUpcomingAlerts) {
+    newState.allUpcomingAlerts = state.home.allUpcomingAlerts;
+  }
+
+  if (state.home.homeError) {
+    newState.hasError = state.home.homeError;
+    newState.errorMessage = state.home.errorMessage;
+  }
+
+  return newState;
 };
 
 export default connect(

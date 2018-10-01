@@ -1,18 +1,26 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Switch, Keyboard } from "react-native";
 import { connect } from "react-redux";
 
 import { Card, CardItem, Input, Button, Header, AsyncSpinner } from "./common";
-import { emailChanged, passwordChanged, loginUser } from "../actions";
+import {
+  emailChanged,
+  passwordChanged,
+  loginUser,
+  loggingIn
+} from "../actions";
 
 class LoginForm extends Component {
   constructor() {
     super();
-    this.state = { error: null };
+    this.state = {
+      errorMessage: null,
+      stayLoggedIn: true
+    };
   }
-  componentWillReceiveProps() {
-    if (this.props.error) {
-      this.setState({ error: this.props.error });
+  componentWillReceiveProps(newProps) {
+    if (newProps) {
+      this.setState({ errorMessage: newProps.errorMessage });
     }
   }
 
@@ -25,17 +33,22 @@ class LoginForm extends Component {
   }
 
   onLoginPress() {
-    this.setState({ error: null });
+    Keyboard.dismiss();
+    this.props.loggingIn();
     const { email, password } = this.props;
 
-    this.props.loginUser({ email, password });
+    this.props.loginUser({
+      email,
+      password,
+      stayLoggedIn: this.state.stayLoggedIn
+    });
   }
 
   renderError() {
-    if (this.state.error) {
+    if (this.state.errorMessage) {
       return (
-        <View style={{ backgroundColor: "white" }}>
-          <Text style={styles.errorTextStyle}>{this.props.error}</Text>
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorTextStyle}>{this.props.errorMessage}</Text>
         </View>
       );
     }
@@ -43,21 +56,28 @@ class LoginForm extends Component {
 
   renderButton() {
     if (this.props.loading) {
-      return <AsyncSpinner />;
+      return (
+        <View style={styles.spinnerContainer}>
+          <AsyncSpinner />
+        </View>
+      );
     }
-
     return <Button onPress={this.onLoginPress.bind(this)}>Login</Button>;
   }
 
+  onStayLoggedInChange() {
+    this.setState({ stayLoggedIn: !this.state.stayLoggedIn });
+  }
+
   render() {
-    console.log("state", this.state);
+    console.log("Render props", this.props, this.state);
     return (
       <View style={styles.containerStyle}>
         <Card>
           <CardItem>
             <Input
               onChangeText={this.onEmailChange.bind(this)}
-              label="Email"
+              label="Email:"
               placeholder="my.email@gmail.com"
               value={this.props.email}
             />
@@ -67,11 +87,18 @@ class LoginForm extends Component {
               onChangeText={this.onPasswordChange.bind(this)}
               value={this.props.password}
               secureTextEntry
-              label="Password"
+              label="Password:"
               placeholder="password"
             />
           </CardItem>
-          {this.state.error && this.renderError.bind(this)}
+          <CardItem>
+            <Text style={styles.labelStyle}>Stay signed in: </Text>
+            <Switch
+              value={this.state.stayLoggedIn}
+              onValueChange={this.onStayLoggedInChange.bind(this)}
+            />
+          </CardItem>
+          {this.state.errorMessage && this.renderError()}
           <CardItem>{this.renderButton()}</CardItem>
         </Card>
       </View>
@@ -80,6 +107,16 @@ class LoginForm extends Component {
 }
 
 const styles = {
+  errorContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white"
+  },
+  spinnerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   errorTextStyle: {
     fontSize: 20,
     alignSelf: "center",
@@ -89,14 +126,22 @@ const styles = {
     backgroundColor: "#c1e8ff",
     flex: 1,
     paddingTop: 50
+  },
+  labelStyle: {
+    color: "blue",
+    fontSize: 18,
+    paddingLeft: 20,
+    paddingBottom: 5
   }
 };
 
 const mapStateToProps = (state, ownProps) => {
+  console.log("mstp", state);
+
   return {
     email: state.auth.email,
     password: state.auth.password,
-    error: state.auth.error,
+    errorMessage: state.auth.errorMessage,
     loading: state.auth.loading
   };
 };
@@ -106,6 +151,7 @@ export default connect(
   {
     emailChanged,
     passwordChanged,
-    loginUser
+    loginUser,
+    loggingIn
   }
 )(LoginForm);

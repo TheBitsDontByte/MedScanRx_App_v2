@@ -3,41 +3,50 @@ import {
   PASSWORD_CHANGED,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
-  LOGIN_USER_ERROR
+  LOGIN_USER_ERROR,
+  LOGGING_IN
 } from "../actions";
+import { initializeApp } from "../../node_modules/firebase";
 
 //TODO revert
-const INITIAL_STATE = {
-  email: "test@test.com",
+const initialState = {
+  email: "test@test.com", //TESTING
   password: "05311983",
   user: null,
-  error: "",
-  loading: false
+  errorMessage: null,
+  loading: null,
+  patientId: null
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case EMAIL_CHANGED:
       return { ...state, email: action.payload };
     case PASSWORD_CHANGED:
       return { ...state, password: action.payload };
+    case LOGGING_IN:
+      return {
+        ...state,
+        loading: true,
+        errorMessage: null
+      };
     case LOGIN_USER_SUCCESS:
       return {
         ...state,
         user: action.payload.user,
         patientId: action.payload.patientId,
-        error: "",
-        loading: false
+        error: null,
+        loading: null
       };
     case LOGIN_USER_ERROR:
       return {
         ...state,
-        error: "Invalid username or password",
+        errorMessage: action.payload,
         password: "",
         loading: false
       };
     case LOGOUT_USER:
-      return INITIAL_STATE;
+      return initialState;
     default:
       return state;
   }

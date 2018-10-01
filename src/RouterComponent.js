@@ -51,7 +51,7 @@ class RouterComponent extends React.Component {
             />
           </Scene>
 
-          <Scene
+          <Scene type={ActionConst.RESET}
             key="main"
           >
             <Scene

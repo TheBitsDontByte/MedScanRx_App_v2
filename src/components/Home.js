@@ -9,17 +9,18 @@ import { clearValues, getAllUpcomingAlerts } from "../actions";
 
 class Home extends Component {
   onMedicinesPress() {
-    this.props.clearValues();
     Actions.medicines({
       callback: () => this.props.getAllUpcomingAlerts(this.props.patientId)
     });
+    this.props.clearValues();
+
   }
 
   onAlertsPress() {
-    this.props.clearValues();
     Actions.alerts({
       callback: () => this.props.getAllUpcomingAlerts(this.props.patientId)
     });
+    this.props.clearValues();
   }
 
   render() {
